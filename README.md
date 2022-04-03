@@ -39,7 +39,7 @@ Deploy web application from https://github.com/qyjohn/web-demo to a fault tolere
 
 ## Architectural diagram
 
-![diagram](./assets/AWS-Challenge.png)
+![diagram](./assets/diagram.png)
 ----
 
 ## Deploying the App 
@@ -200,7 +200,7 @@ Now add a command to /etc/fstab to auto mount EFS after reboot.
    - Enable **Monitoring** (optional)
    - Desired capacity **1** ,Minimum capacity **1**, Maximum capacity **4**.
    - **Target tracking scaling policy** , **Avarage CPU Utilisation** - TargetValue **85%**
-   - Add Notifications - you can add **SNS Notifications when even auto scalling triggers**
+   - Add Notifications - you can add **SNS Notifications when ever auto scalling triggers**
   
 ### Step 6. S3
 - Create a **IAM Role**  to grants access to Amazon S3 and assign role to EC2. 
