@@ -196,7 +196,8 @@ Now add a command to /etc/fstab to auto mount EFS after reboot.
    - **Target tracking scaling policy** , **Avarage CPU Utilisation** - TargetValue **85%**
    - Add Notifications - you can add **SNS Notifications when even auto scalling triggers**
   
-###  S3
+### Step 6. S3
 - Create a **IAM Role**  to grants access to Amazon S3 and assign role to EC2. 
 - Create and S3 Bucket
   
+### Step 7. Cloud-Watch
