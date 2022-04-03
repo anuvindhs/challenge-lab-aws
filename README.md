@@ -20,7 +20,7 @@ Deploy web application from https://github.com/qyjohn/web-demo to a fault tolere
 - Adding S3 for static assests
    - Refer **Step 6**
 - CDN - CloudFront
-
+  - Refer **Step 7**
 </br>
 
 ### App Rnning on AWS environment 
