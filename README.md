@@ -210,7 +210,7 @@ Once you have done this update the Config.php file with
 information 
 
 ```
-$s3_region  = "us-east-2";
+$s3_region  = "ap-southeast-2";
 $s3_bucket  = "bucket_name";
 $s3_prefix  = "uploads";
 $s3_baseurl = "https://bucket_name.s3-region-name.amazonaws.com/";
@@ -227,6 +227,11 @@ $s3_baseurl = "https://bucket_name.s3-region-name.amazonaws.com/";
 - Standard logging - `ON` 
 
 
+Once the distribution is created grab the Domain name from dashboard and update it on the Config file
+```
+$enable_cf  = true;
+$cf_baseurl = "http://xxxxxxxxxxxxxx.cloudfront.net/";
+```
 
 ### Step 8. Cloud-Watch
 **Cloud watch** is a good way to monitor logs in EC2, I have wriiten a blog on this (How to **deliver logs to CloudWatch from Ec2** - [iCTPro.co.nz](https://ictpro.co.nz/how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-100-days-of-cloud-day-12/?utm_source=rss&utm_medium=rss&utm_campaign=how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-100-days-of-cloud-day-12), [dev.to](https://dev.to/aws-builders/how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-7cp)) . We can deliver /var/log/apache2/access.log , /var/log/apache2/error.log with this method.
