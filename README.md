@@ -8,10 +8,11 @@ Deploy web application from https://github.com/qyjohn/web-demo to a fault tolere
   - Check **Step 5**
 - How can we speed up the deployment process?
   - **Infrastucture as Code** - We can use IAC to speedup the deployment. We can ether use **Terraform** or **AWS cloud Formation**  for this  
-- security for app , more sure how?
+- security for app , more Secure how?
    - For EC2- We can use **Roles** to access the S3.
    - **AWS WAF** and **CDN** is also a good consideration to imporove security
    - **For Apache** -  Disable the server-info Directive, server-status Directive.
+   - Also can disable public access to EC2 by restricting secuity group to load balancer only (as we are delivering by LB to Public).
    - Monitor Logs 
  - Perfomance issue , cloud watch,cpu monitoring, accesslogs, deatils of instance
    - To improve perfomance we can use **AWS ElastiCache** , Memcached & Redis. once launched update on Config.php
@@ -20,12 +21,19 @@ Deploy web application from https://github.com/qyjohn/web-demo to a fault tolere
    - Refer **Step 6**
 - CDN - CloudFront
 
+</br>
+### App Rnning on AWS environment 
+ https://aws-lab.ictpro.io/web-demo/
+</br>
+
  - **Amazon Certificate Manager** - Using ACM we can get a SSL certificate and deliver it throuh Route 53
    - Issue a Certificate , Update DNS Validation and   update the lister -  Port 443 to forward to targetgroup created.
  - Also can edit the /etc/apache2/sites-available/000-default.conf to change the apache folder to point it web-demo
 
-**App Rnning on AWS environment** : - https://aws-lab.ictpro.io/web-demo/
 
+## Architectural diagram
+
+![diagram](./assets/AWS-Challenge.png)
 ----
 
 ## Deploying the App 
@@ -191,4 +199,4 @@ Now add a command to /etc/fstab to auto mount EFS after reboot.
 ###  S3
 - Create a **IAM Role**  to grants access to Amazon S3 and assign role to EC2. 
 - Create and S3 Bucket
-- 
+  
