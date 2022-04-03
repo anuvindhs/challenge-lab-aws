@@ -24,8 +24,8 @@ Deploy web application from https://github.com/qyjohn/web-demo to a fault tolere
 </br>
 
 ### App Rnning on AWS environment 
- https://aws-lab.ictpro.io/web-demo/
- 
+ https://aws-lab.ictpro.io/web-demo
+
 </br>
 
  - **Amazon Certificate Manager** - Using ACM we can get a SSL certificate and deliver it throuh Route 53
