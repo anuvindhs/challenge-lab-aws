@@ -201,5 +201,32 @@ Now add a command to /etc/fstab to auto mount EFS after reboot.
 ### Step 6. S3
 - Create a **IAM Role**  to grants access to Amazon S3 and assign role to EC2. 
 - Create and S3 Bucket
-  
-### Step 7. Cloud-Watch
+- Create a folder named `uploads`
+-  Change Permissions 
+   - Update bucket policy with GET, PUT actions ,
+   - Enable public access, 
+
+Once you have done this update the Config.php file with
+information 
+
+```
+$s3_region  = "us-east-2";
+$s3_bucket  = "bucket_name";
+$s3_prefix  = "uploads";
+$s3_baseurl = "https://bucket_name.s3-region-name.amazonaws.com/";
+```
+
+### Step 7. CloudFront
+
+- Goto CloudFront Dashbaord and click **Create distribution**
+- Orgin - select the S3 we created above
+- OAI (optional) - Enabling this will help you to acess S3 content via `CloudFront` only
+- SHIELD ORGIN - `WAF` if you have created one , else leave it 
+- Viewer protocol policy - `Redirect HTTP to HTTPS`.
+- Custom SSL certificate (optional) - If you have created `ACM` you can add that here
+- Standard logging - `ON` 
+
+
+
+### Step 8. Cloud-Watch
+**Cloud watch** is a good way to monitor logs in EC2, I have wriiten a blog on this (How to **deliver logs to CloudWatch from Ec2** - [iCTPro.co.nz](https://ictpro.co.nz/how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-100-days-of-cloud-day-12/?utm_source=rss&utm_medium=rss&utm_campaign=how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-100-days-of-cloud-day-12), [dev.to](https://dev.to/aws-builders/how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-7cp)) . We can deliver /var/log/apache2/access.log , /var/log/apache2/error.log with this method.
