@@ -27,7 +27,8 @@ Deploy web application from https://github.com/qyjohn/web-demo to a fault tolere
  
  (S3 implentation still have some issues on above demo , troubleshooting
  - i have updated the s3 information as mentiond on step 6 and can upload the images via APP.
- - issue - cannot preview the uploaded images via app)
+ - issue - cannot preview the uploaded images via app
+ - Suspecting its a permission issue on the LAB Environment to update the policy on S3 )
 
 </br>
 
