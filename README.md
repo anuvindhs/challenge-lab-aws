@@ -143,6 +143,16 @@ $db_username = "username";
 $db_password = "password";
 ```  
 
+#### S3 
+
+ 
+ Refer **Step 4**
+
+
+#### Cloudfront
+
+Refer **Step 5**
+
 #### Creating Amazon machine image (AMI)
 - Go to EC2 console 
 - Select EC2 , Actions, Image and Templetes , Then click Create Image. 
@@ -152,11 +162,16 @@ $db_password = "password";
  - Goto you AMI and Launch With Enabled Public IP, Created IAM Role , Keypair & Security Group For EC2 (SG-EC2-AWS-LAB)
 
 #### Setup Load Balancer
-- Refer **Step  4**
+- Refer **Step  7**
 
 #### Create Auto Scaling
-- Refer **Step 5**
-  
+- Refer **Step 8**
+
+ #### Create a dashboard (optional)
+ - Goto cloudwatch and create dashoard
+ - ADD RDS and Ec2 Mertics
+
+  -----
 ### Step 2. RDS 
 - Create RDS Security Group (Name: SG-RDS-AWS-LAB)
   
@@ -193,7 +208,54 @@ $db_password = "password";
     ```
 Go to Step 1 section -  Verify Git Install, folder permissions & clone application repo
 
-### Step 4. Load Balancer
+
+### Step 4. S3
+- Create a **IAM Role**  to grants access to Amazon S3 and assign role to EC2. (No permission in lab to create role)
+- Create and S3 Bucket
+- Create a folder named `uploads`
+- Enable Access control list (ACL)
+-  Change - ACLs to enabled
+   - Update bucket policy with GET, PUT actions ,
+   - Enable public access, 
+
+Once you have done this update the Config.php file with
+information 
+
+```
+$s3_region  = "ap-southeast-2";
+$s3_bucket  = "bucket_name";
+$s3_prefix  = "uploads";
+$s3_baseurl = "https://bucket_name.s3-region-name.amazonaws.com/";
+```
+Goto step 1 section Cloudfront
+
+### Step 5. CloudFront
+
+- Goto CloudFront Dashbaord and click **Create distribution**
+- Orgin - select the S3 we created above
+- OAI (optional) - Enabling this will help you to acess S3 content via `CloudFront` only
+- Origin path - /uploads
+- SHIELD ORGIN - `WAF` if you have created one , else leave it 
+- Viewer protocol policy - `Redirect HTTP to HTTPS`.
+- Custom SSL certificate (optional) - If you have created `ACM` you can add that here
+- Standard logging - `ON` 
+
+
+Once the distribution is created grab the Domain name from dashboard and update it on the Config file
+```
+$enable_cf  = true;
+$cf_baseurl = "http://xxxxxxxxxxxxxx.cloudfront.net/";
+```
+Goto step 1 section Creating AMI
+
+### Step 6. Cloud-Watch
+- **Cloud watch** is a good way to monitor logs in EC2, I have wriiten a blog on this (How to **deliver logs to CloudWatch from Ec2** - [iCTPro.co.nz](https://ictpro.co.nz/how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-100-days-of-cloud-day-12/?utm_source=rss&utm_medium=rss&utm_campaign=how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-100-days-of-cloud-day-12), [dev.to](https://dev.to/aws-builders/how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-7cp)) . We can deliver /var/log/apache2/access.log , /var/log/apache2/error.log with this method.
+- We can create a dashboard and add alarms from auto-scaling and for EC2 metrics.
+  
+
+
+
+### Step 7. Load Balancer
 
 - **Create target Group**
   - Choose a target type as Instance
@@ -211,7 +273,7 @@ Go to Step 1 section -  Verify Git Install, folder permissions & clone applicati
   - Click Create Loadbalancer
 
 
-### Step 5. Auto-scalling
+### Step 8. Auto-scalling
 
 
 - Creating Launch Template
@@ -239,43 +301,6 @@ Go to Step 1 section -  Verify Git Install, folder permissions & clone applicati
      - Create new SNS Topic , Add a Name and Email address Click Next
    - Click create auto scaling
   
-  
-### Step 6. S3
-- Create a **IAM Role**  to grants access to Amazon S3 and assign role to EC2. 
-- Create and S3 Bucket
-- Create a folder named `uploads`
--  Change Permissions 
-   - Update bucket policy with GET, PUT actions ,
-   - Enable public access, 
+  </br>
 
-Once you have done this update the Config.php file with
-information 
-
-```
-$s3_region  = "ap-southeast-2";
-$s3_bucket  = "bucket_name";
-$s3_prefix  = "uploads";
-$s3_baseurl = "https://bucket_name.s3-region-name.amazonaws.com/";
-```
-
-### Step 7. CloudFront
-
-- Goto CloudFront Dashbaord and click **Create distribution**
-- Orgin - select the S3 we created above
-- OAI (optional) - Enabling this will help you to acess S3 content via `CloudFront` only
-- SHIELD ORGIN - `WAF` if you have created one , else leave it 
-- Viewer protocol policy - `Redirect HTTP to HTTPS`.
-- Custom SSL certificate (optional) - If you have created `ACM` you can add that here
-- Standard logging - `ON` 
-
-
-Once the distribution is created grab the Domain name from dashboard and update it on the Config file
-```
-$enable_cf  = true;
-$cf_baseurl = "http://xxxxxxxxxxxxxx.cloudfront.net/";
-```
-
-### Step 8. Cloud-Watch
-- **Cloud watch** is a good way to monitor logs in EC2, I have wriiten a blog on this (How to **deliver logs to CloudWatch from Ec2** - [iCTPro.co.nz](https://ictpro.co.nz/how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-100-days-of-cloud-day-12/?utm_source=rss&utm_medium=rss&utm_campaign=how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-100-days-of-cloud-day-12), [dev.to](https://dev.to/aws-builders/how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-7cp)) . We can deliver /var/log/apache2/access.log , /var/log/apache2/error.log with this method.
-- We can create a dashboard and add alarms from auto-scaling and for EC2 metrics.
   
