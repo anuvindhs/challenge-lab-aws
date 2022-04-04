@@ -67,17 +67,6 @@ sudo apt-get install apache2 php libapache2-mod-php php-mysql php-curl php-xml p
 sudo service apache2 restart
 ```
 
-#### Update RDS from the backup
-Goto Step **2. RDS** and come back once completed.  
-
-- Sign into RDS
-- Create DB, username and password 
-- Grant privilages
-- Update the backup to rds.
-
-#### Update Config File
-- update the config file.
-
 #### Attach EFS
 - Goto Step **step 3** and comeback
 
@@ -113,6 +102,47 @@ Now add a command to /etc/fstab to auto mount EFS after reboot.
 <EFS-endpoint-url>:/ /efs nfs defaults,_netdev 0 0
 ```
 
+
+#### Update RDS from the backup
+Goto Step **2. RDS** and come back once completed.  
+
+- Sign into RDS
+
+```
+mysql -h [endpoint-of-rds-instance] -u admin –p
+```
+
+- Create DB, username and password 
+  
+```
+CREATE DATABASE web_demo; 
+
+CREATE USER 'username'@'%' IDENTIFIED BY 'password';
+```
+
+- Grant privilages
+  
+```
+GRANT ALL PRIVILEGES ON web_demo.* TO 'user.name'@'%'; 
+exit
+```
+
+- Update the backup to rds.
+  Now on ec2
+  
+  ```
+  cd /efs/web-demo
+   mysql -h <db-endpoint from rds> -u user.name -p web_demo < web_demo.sql
+  ```
+#### Update Config File
+- update the config file with all DB info.
+```
+$db_hostname = db enpoint;
+$db_database = "web_demo";
+$db_username = "username";
+$db_password = "password";
+```  
+
 #### Creating Amazon machine image (AMI)
 - Go to EC2 console 
 - Select EC2 , Actions, Image and Templetes , Then click Create Image. 
@@ -126,6 +156,7 @@ Now add a command to /etc/fstab to auto mount EFS after reboot.
 
 #### Create Auto Scaling
 - Refer **Step 5**
+  
 ### Step 2. RDS 
 - Create RDS Security Group (Name: SG-RDS-AWS-LAB)
   
@@ -153,10 +184,14 @@ Now add a command to /etc/fstab to auto mount EFS after reboot.
 - Create a EFS
 - Update the SG in EFS under network tab
 - mount the EFS to EC2
+  ```
+  sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport <efs--endpoint>:/ efs
+  ```
 - Give permission
     ```
    sudo chown -R ubuntu:ubuntu /efs 
     ```
+Go to Step 1 section -  Verify Git Install, folder permissions & clone application repo
 
 ### Step 4. Load Balancer
 
@@ -200,7 +235,10 @@ Now add a command to /etc/fstab to auto mount EFS after reboot.
    - Enable **Monitoring** (optional)
    - Desired capacity **1** ,Minimum capacity **1**, Maximum capacity **4**.
    - **Target tracking scaling policy** , **Avarage CPU Utilisation** - TargetValue **85%**
-   - Add Notifications - you can add **SNS Notifications when ever auto scalling triggers**
+   - Add Notifications - you can add **SNS Notifications when ever auto scalling triggers** 
+     - Create new SNS Topic , Add a Name and Email address Click Next
+   - Click create auto scaling
+  
   
 ### Step 6. S3
 - Create a **IAM Role**  to grants access to Amazon S3 and assign role to EC2. 
