@@ -39,6 +39,10 @@ Deploy web application from https://github.com/qyjohn/web-demo to a fault tolere
 ## Architectural diagram
 
 ![diagram](./assets/diagram.png)
+
+
+(Didnot got time to implement Redis and S3 )
+
 ----
 
 ## Deploying the App 
