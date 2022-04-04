@@ -23,8 +23,7 @@ Deploy web application from https://github.com/qyjohn/web-demo to a fault tolere
   - Refer **Step 7**
 </br>
 
-### App Rnning on AWS environment 
- https://aws-lab.ictpro.io/web-demo 
+
  
  (S3 implentation still have some issues on above demo , troubleshooting
  - i have updated the s3 information as mentiond on step 6 and can upload the images via APP.
