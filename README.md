@@ -202,4 +202,4 @@ Now add a command to /etc/fstab to auto mount EFS after reboot.
 - Create a **IAM Role**  to grants access to Amazon S3 and assign role to EC2. 
 - Create and S3 Bucket
   
-### Step 7. Cloud-Watch
+### Step 7. Cloud-Watch.
