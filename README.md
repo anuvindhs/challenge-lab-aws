@@ -205,10 +205,6 @@ Now add a command to /etc/fstab to auto mount EFS after reboot.
 ### Step 6. S3
 - Create a **IAM Role**  to grants access to Amazon S3 and assign role to EC2. 
 - Create and S3 Bucket
-<<<<<<< HEAD
-  
-### Step 7. Cloud-Watch.
-=======
 - Create a folder named `uploads`
 -  Change Permissions 
    - Update bucket policy with GET, PUT actions ,
@@ -245,4 +241,3 @@ $cf_baseurl = "http://xxxxxxxxxxxxxx.cloudfront.net/";
 - **Cloud watch** is a good way to monitor logs in EC2, I have wriiten a blog on this (How to **deliver logs to CloudWatch from Ec2** - [iCTPro.co.nz](https://ictpro.co.nz/how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-100-days-of-cloud-day-12/?utm_source=rss&utm_medium=rss&utm_campaign=how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-100-days-of-cloud-day-12), [dev.to](https://dev.to/aws-builders/how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-7cp)) . We can deliver /var/log/apache2/access.log , /var/log/apache2/error.log with this method.
 - We can create a dashboard and add alarms from auto-scaling and for EC2 metrics.
   
->>>>>>> 2c8bb5163424f29a5c46f37861efdca938802b7c
