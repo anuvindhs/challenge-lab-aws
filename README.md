@@ -20,11 +20,15 @@ Deploy web application from https://github.com/qyjohn/web-demo to a fault tolere
 - Adding S3 for static assests
    - Refer **Step 6**
 - CDN - CloudFront
-
+  - Refer **Step 7**
 </br>
 
 ### App Rnning on AWS environment 
- https://aws-lab.ictpro.io/web-demo
+ https://aws-lab.ictpro.io/web-demo 
+ 
+ (S3 implentation still have some issues on above demo , troubleshooting
+ - i have updated the s3 information as mentiond on step 6 and can upload the images via APP.
+ - issue - cannot preview the uploaded images via app)
 
 </br>
 
@@ -35,7 +39,7 @@ Deploy web application from https://github.com/qyjohn/web-demo to a fault tolere
 
 ## Architectural diagram
 
-![diagram](./assets/AWS-Challenge.png)
+![diagram](./assets/diagram.png)
 ----
 
 ## Deploying the App 
@@ -196,10 +200,49 @@ Now add a command to /etc/fstab to auto mount EFS after reboot.
    - Enable **Monitoring** (optional)
    - Desired capacity **1** ,Minimum capacity **1**, Maximum capacity **4**.
    - **Target tracking scaling policy** , **Avarage CPU Utilisation** - TargetValue **85%**
-   - Add Notifications - you can add **SNS Notifications when even auto scalling triggers**
+   - Add Notifications - you can add **SNS Notifications when ever auto scalling triggers**
   
 ### Step 6. S3
 - Create a **IAM Role**  to grants access to Amazon S3 and assign role to EC2. 
 - Create and S3 Bucket
+<<<<<<< HEAD
   
 ### Step 7. Cloud-Watch.
+=======
+- Create a folder named `uploads`
+-  Change Permissions 
+   - Update bucket policy with GET, PUT actions ,
+   - Enable public access, 
+
+Once you have done this update the Config.php file with
+information 
+
+```
+$s3_region  = "ap-southeast-2";
+$s3_bucket  = "bucket_name";
+$s3_prefix  = "uploads";
+$s3_baseurl = "https://bucket_name.s3-region-name.amazonaws.com/";
+```
+
+### Step 7. CloudFront
+
+- Goto CloudFront Dashbaord and click **Create distribution**
+- Orgin - select the S3 we created above
+- OAI (optional) - Enabling this will help you to acess S3 content via `CloudFront` only
+- SHIELD ORGIN - `WAF` if you have created one , else leave it 
+- Viewer protocol policy - `Redirect HTTP to HTTPS`.
+- Custom SSL certificate (optional) - If you have created `ACM` you can add that here
+- Standard logging - `ON` 
+
+
+Once the distribution is created grab the Domain name from dashboard and update it on the Config file
+```
+$enable_cf  = true;
+$cf_baseurl = "http://xxxxxxxxxxxxxx.cloudfront.net/";
+```
+
+### Step 8. Cloud-Watch
+- **Cloud watch** is a good way to monitor logs in EC2, I have wriiten a blog on this (How to **deliver logs to CloudWatch from Ec2** - [iCTPro.co.nz](https://ictpro.co.nz/how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-100-days-of-cloud-day-12/?utm_source=rss&utm_medium=rss&utm_campaign=how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-100-days-of-cloud-day-12), [dev.to](https://dev.to/aws-builders/how-to-monitor-unauthorized-ssh-attempts-on-your-server-get-email-alert-7cp)) . We can deliver /var/log/apache2/access.log , /var/log/apache2/error.log with this method.
+- We can create a dashboard and add alarms from auto-scaling and for EC2 metrics.
+  
+>>>>>>> 2c8bb5163424f29a5c46f37861efdca938802b7c
