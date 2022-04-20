@@ -127,7 +127,7 @@ CREATE USER 'username'@'%' IDENTIFIED BY 'password';
 - Grant privilages
   
 ```
-GRANT ALL PRIVILEGES ON web_demo.* TO 'user.name'@'%'; 
+GRANT ALL PRIVILEGES ON web_demo.* TO 'username'@'%'; 
 exit
 ```
 
